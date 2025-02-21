@@ -1,0 +1,36 @@
+services:
+  STACK_PLACEHOLDER-db:
+    image: IMAGE_PLACEHOLDER
+    restart: always
+    environment:
+      # mongo envs
+      - MONGO_INITDB_ROOT_USERNAME=DEPLOY_ROOT_USERNAME_PLACEHOLDER
+      - MONGO_INITDB_ROOT_PASSWORD=DEPLOY_ROOT_PASSWORD_PLACEHOLDER
+      # postgres envs
+      - POSTGRES_USER=DEPLOY_ROOT_USERNAME_PLACEHOLDER
+      - POSTGRES_PASSWORD=DEPLOY_ROOT_PASSWORD_PLACEHOLDER
+      # sqlserver envs
+      - MSSQL_SA_PASSWORD=DEPLOY_ROOT_PASSWORD_PLACEHOLDER
+      - ACCEPT_EULA=Y
+      # mysql envs
+      - MYSQL_ROOT_PASSWORD=DEPLOY_ROOT_PASSWORD_PLACEHOLDER
+      # mariadb envs
+      - MARIADB_ROOT_PASSWORD=DEPLOY_ROOT_PASSWORD_PLACEHOLDER
+    volumes: 
+      - db-storage:VOLUME_CONTAINER_PLACEHOLDER
+      # mongo volumes -> /data/db
+      # postgres volumes -> /var/lib/postgresql/data
+      # sqlserver volumes -> /var/opt/mssql/data
+      # mysql volumes -> /var/lib/mysql
+      # mariadb volumes -> /var/lib/mysql
+    ports:
+      - "PORT_PLACEHOLDER:PORT_CONTAINER_PLACEHOLDER"
+
+
+volumes:
+  db-storage:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/deploy/database/VOLUME_PLACEHOLDER
