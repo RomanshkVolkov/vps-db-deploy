@@ -123,7 +123,8 @@ function runDeploy() {
 
   if [ "$image" == "sqlserver" ]; then
     message "Adjusting directory permissions..."
-    ssh -o StrictHostKeyChecking=no -p 22 $user@${target} "chown systemd-coredump:systemd-coredump $vol_dir"
+    # Desde 2019, se ejecuta como el usuario mssql (UID 10001)
+    ssh -o StrictHostKeyChecking=no -p 22 $user@${target} "chown -R 10001:0 $vol_dir"
   fi
 
   message "Copying build template to target..."
@@ -132,7 +133,7 @@ function runDeploy() {
   message "Deploying stack..."
   ssh -o StrictHostKeyChecking=no -p 22 root@${target} "docker stack deploy -c "/tmp/$file" "$image-$enviroment""
 
-  message "Removing file from target..."
+ < message "Removing file from target..."
   ssh -o StrictHostKeyChecking=no -p 22 root@${target} "rm /tmp/$file"
 
   message "Stack deployed successfully"
