@@ -116,9 +116,15 @@ function runDeploy() {
 
   validateExistFile $file
   user="deploy"
+  vol_dir="/home/deploy/database/$image-$enviroment"
 
   message "Creating directory on target..."
-  ssh -o StrictHostKeyChecking=no -p 22 $user@${target} "mkdir -p /home/deploy/database/$image-$enviroment"
+  ssh -o StrictHostKeyChecking=no -p 22 $user@${target} "mkdir -p $vol_dir"
+
+  if [ "$image" == "sqlserver" ]; then
+    message "Adjusting directory permissions..."
+    ssh -o StrictHostKeyChecking=no -p 22 $user@${target} "chown systemd-coredump:systemd-coredump $vol_dir"
+  fi
 
   message "Copying build template to target..."
   scp -o StrictHostKeyChecking=no -P 22 $file root@${target}:/tmp/$file
